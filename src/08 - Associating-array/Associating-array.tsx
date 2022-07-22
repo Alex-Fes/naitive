@@ -34,7 +34,7 @@ export const users: UsersType = {
 
 users[12];
 
-let user = {id: 100500; name: 'Vika'};
+let user = { name: 'Vika', id: 100500 };
 users[user.id] = user;
 delete users[user.id];
 users[user.id].name = 'Viktoria';
@@ -48,8 +48,8 @@ export const usersArray = [
 ]
 usersArray.find(u => u.id === 43232);
 
-let usersCopy = [...usersArray.filter(), user]
-let usersArray = usersArray.filter(u => u.id !== user.id)
+let usersCopy = [...usersArray.filter(u => u.id === user.id), user]
+let usersArray1 = usersArray.filter(u => u.id !== user.id)
 
 
 

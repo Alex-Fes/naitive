@@ -11,6 +11,9 @@ export type LaptopType = {
 export type UserWithLaptopType = UserType & {
     laptop: LaptopType
 }
+export type UserWithBooksType = UserType & {
+    books: Array<string>
+}
 
 export function makeHairstyle(u: UserType, power: number) {
     let copy = {...u, hair: u.hair / power}
@@ -38,5 +41,35 @@ export function upgradeUserLaptop(u: UserWithLaptopType, title: string) {
         }
     }
 }
+
+export function changeUserHouse(u: UserWithLaptopType & UserWithBooksType, house: number) {
+    return {
+        ...u,
+        address: {
+            ...u.address, house: house
+        }
+    }
+}
+
+export function addNewBooks(u: UserWithLaptopType & UserWithBooksType, books: string) {
+    return {
+        ...u,
+        books: [...u.books, books]
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

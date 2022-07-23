@@ -1,13 +1,14 @@
 import {
-    addNewBooks,
+    addNewBooks, addNewCompany, changeCompanyTitle, changeCompanyTitleInAssociationArray,
     changeUserHouse,
     makeHairstyle,
-    moveUser,
+    moveUser, removeUserBook, updateUserBook,
     upgradeUserLaptop,
     UserType,
     UserWithBooksType,
-    UserWithLaptopType
+    UserWithLaptopType, WithCompaniesType
 } from "./Immutability";
+import {usersObj} from "../08 - Associating-array/Associating-array";
 
 
 test('reference type test', () => {
@@ -19,7 +20,7 @@ test('reference type test', () => {
             house: 13
         }
     };
-   let awesomeUser = makeHairstyle(user, 2)
+    let awesomeUser = makeHairstyle(user, 2)
     expect(awesomeUser.hair).toBe(18);
     expect(user.hair).toBe(36);
     expect(awesomeUser.address).toBe(user.address)
@@ -65,7 +66,7 @@ test('upgrade user laptop', () => {
 })
 
 test('Move User to another house', () => {
-    let user: UserWithLaptopType & UserWithBooksType= {
+    let user: UserWithLaptopType & UserWithBooksType = {
         name: 'Alex',
         hair: 36,
         address: {
@@ -87,7 +88,7 @@ test('Move User to another house', () => {
 })
 
 test('Add new books to user', () => {
-    let user: UserWithLaptopType & UserWithBooksType= {
+    let user: UserWithLaptopType & UserWithBooksType = {
         name: 'Alex',
         hair: 36,
         address: {
@@ -105,17 +106,103 @@ test('Add new books to user', () => {
     expect(user.address).toBe(changeUserBooks.address);
     expect(user.books).not.toBe(changeUserBooks.books);
     expect(changeUserBooks.books[4]).toBe('ts');
-
-
-
 })
 
+test('Update js to ts user', () => {
+    let user: UserWithLaptopType & UserWithBooksType = {
+        name: 'Alex',
+        hair: 36,
+        address: {
+            city: 'Minsk',
+            house: 12
+        },
+        laptop: {
+            title: 'Legion'
+        },
+        books: ['css', 'html', 'js', 'react']
+    };
+    let changeUserBooks = updateUserBook(user, 'js', 'ts')
+    expect(user).not.toBe(changeUserBooks);
+    expect(user.laptop).toBe(changeUserBooks.laptop);
+    expect(user.address).toBe(changeUserBooks.address);
+    expect(user.books).not.toBe(changeUserBooks.books);
+    expect(changeUserBooks.books[2]).toBe('ts');
+})
 
+test('Remove js from books', () => {
+    let user: UserWithLaptopType & UserWithBooksType = {
+        name: 'Alex',
+        hair: 36,
+        address: {
+            city: 'Minsk',
+            house: 12
+        },
+        laptop: {
+            title: 'Legion'
+        },
+        books: ['css', 'html', 'js', 'react']
+    };
+    let changeUserBooks = removeUserBook(user, 'js')
+    expect(user).not.toBe(changeUserBooks);
+    expect(user.laptop).toBe(changeUserBooks.laptop);
+    expect(user.address).toBe(changeUserBooks.address);
+    expect(user.books).not.toBe(changeUserBooks.books);
+    expect(changeUserBooks.books[2]).not.toBe('js');
+})
 
+test('Add new company', () => {
+    let user: UserWithLaptopType & WithCompaniesType = {
+        name: 'Alex',
+        hair: 36,
+        address: {
+            city: 'Minsk',
+            house: 12
+        },
+        laptop: {
+            title: 'Legion'
+        },
+        companies: [{id: 1, title: 'Epam'}, {id: 2, title: 'Seaport'}]
+    };
+    let userCopy = addNewCompany(user, {id:3,title:'Google'})
+    expect(user).not.toBe(userCopy);
+    expect(user.address).toBe(userCopy.address);
+    expect(user.laptop).toBe(userCopy.laptop);
+    expect(userCopy.companies.length).toBe(3);
+})
 
+test('Change company title', () => {
+    let user: UserWithLaptopType & WithCompaniesType = {
+        name: 'Alex',
+        hair: 36,
+        address: {
+            city: 'Minsk',
+            house: 12
+        },
+        laptop: {
+            title: 'Legion'
+        },
+        companies: [{id: 1, title: 'Epam'}, {id: 2, title: 'Seaport'}]
+    };
+    let userCopy = changeCompanyTitle(user, 1, 'EPAM-PAM-PAM')
+    expect(user).not.toBe(userCopy);
+    expect(user.address).toBe(userCopy.address);
+    expect(user.laptop).toBe(userCopy.laptop);
+    expect(user.companies).not.toBe(userCopy.companies);
+    expect(userCopy.companies[0].title).toBe('EPAM-PAM-PAM');
+})
 
+test('Update company in association array', () => {
 
-
+    let companies = {
+        'Alex': [{id: 1, title: 'Epam'}, {id: 2, title: 'Seaport'}],
+        'Vova': [{id: 1, title: 'Roe'}, {id: 2, title: 'Flot'}]
+    }
+   let copy = changeCompanyTitleInAssociationArray(companies, 'Alex', 1, 'EPAM-PAM-PAM')
+    expect(copy).not.toBe(companies);
+    expect(copy['Alex']).not.toBe(companies['Alex']);
+    expect(copy['Vova']).toBe(companies['Vova']);
+    expect(copy['Alex'][0].title).toBe('EPAM-PAM-PAM');
+})
 
 
 

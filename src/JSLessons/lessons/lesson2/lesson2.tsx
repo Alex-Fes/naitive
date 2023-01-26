@@ -100,6 +100,7 @@ console.log('lesson 2');
 // 5) superSum(3)(2,5)(3) //10
 // 6) superSum(3)(2,5)(3,9) //10
 
+
 function superSum (...arg: any) {
     let count = arg[0]
     let sum = 0
@@ -109,7 +110,7 @@ function superSum (...arg: any) {
     if ( arg[0] === 0) return 0
     else {
         for( let i = 0; i < count; i++) {
-           plus(sum, arg[i])
+           sum += arg[0]
         }
     }
     return sum
